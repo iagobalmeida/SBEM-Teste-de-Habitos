@@ -18,7 +18,7 @@
       <form v-on:submit.prevent="nextStep">
         <div class="card-header">
           <div class="container text-center mb-5">
-            <img src="https://sbem-v2.s3.amazonaws.com/static/webportal/liamara/lia_256x256.png" alt="Lia Trevisan" width="256px" height="256px" class="rounded-circle mb-3">
+            <img src="https://sbem-v2.s3.amazonaws.com/static/webportal/liamara/lia_256x256.webp" alt="Lia Trevisan" width="256px" height="256px" class="rounded-circle mb-3">
             <h2 class="display-3 text-primary mb-5" data-aos="fade-up">Teste de Hábitos</h2>
             <!-- Done check -->
             <i v-if="done" class="fas fa-check display-3 text-primary mb-5" data-aos="zoom-in" data-aos-delay="100"></i>
