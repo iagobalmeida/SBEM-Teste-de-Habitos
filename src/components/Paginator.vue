@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex justify-content-evenly align-items-center mt-5 w-sm-100 w-md-50">
+    <div class="d-flex justify-content-evenly align-items-center mt-5 w-sm-100 w-md-50" v-if="currentPage < pageCount">
       <div class="col p-1 mx-1 d-flex justify-content-center align-items-center" v-for="page, number in pageCount" :key="`page_${number}`">
         <div :class="`${page <= currentPage ? 'bg-primary' : '' } border border-2 border-primary rounded-pill shadow-sm`" :style="getStyle(page)"></div>
       </div>

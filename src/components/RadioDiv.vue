@@ -1,6 +1,6 @@
 <template>
   <div :class="wrapperClass" v-on:click="$emit('handleClick')">
-    <label :class="`form-check-label ${selected?'text-white':'text-muted'}`" :for="radioId">
+    <label :class="`form-check-label ${selected?'text-white':''}`" :for="radioId">
       <i :class="`far fa-${selected?'check-':''}circle mr-3 ${selected?'text-white':''}`"></i>
       {{label}}
     </label>
@@ -17,7 +17,7 @@ export default {
   },
   computed: {
     wrapperClass() {
-      return `mb-3 px-3 py-2 d-flex flex-column border rounded ${this.selected ? 'border-primary bg-primary text-white' : 'border-secondary text-muted'}`;
+      return `mb-3 px-3 py-2 d-flex flex-column border rounded ${this.selected ? 'border-primary bg-primary text-white' : ''}`;
     }
   }
 }
