@@ -31,7 +31,7 @@ export default {
   name: 'FormCard',
   props: {
       title:  { type:String, default:''},
-      icon:   { type:String, default:''}
+      icon:   { type:String, default:''},
   }
 }
 </script>

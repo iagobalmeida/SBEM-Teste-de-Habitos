@@ -13,8 +13,8 @@
 export default {
   name: 'Incrementor',
   props: {
-    modelValue: Number,
-    label: String
+    modelValue: { type: Number, default: 0},
+    label: { tyope: String, default: ''}
   },
 }
 </script>
