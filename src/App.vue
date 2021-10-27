@@ -1,7 +1,14 @@
 <template>
   <!-- Warning -->
-  <div class="w-100 bg-primary p-5 text-center text-light h4" v-if="currentStep >= 0">
-    O teste sera enviado para o email <b>{{pages[0].inputs[0].value}}</b>
+  <div class="w-100 bg-primary p-5 text-center text-light h4" v-if="showWarning" data-aos="fade-down">
+    O resultado será enviado para o e-mail <b>{{pages[0].inputs[0].value}}</b>
+    <br class="d-md-none">
+    <button class="btn btn-sm ml-5 btn-primary" v-on:click="changeStep(-1)" tabindex="-1">
+      Alterar
+    </button>
+    <button class="btn btn-sm ml-5 btn-primary" v-on:click="showWarning = false" tabindex="-1">
+      Fechar
+    </button>
   </div>
 
   <!-- Spinner -->
@@ -16,8 +23,8 @@
 
     <!-- Formulário modular -->
     <ModularFormCard
-      v-on:previousStep="previousStep"
-      v-on:nextStep="nextStep"
+      v-on:previousStep="changeStep(currentStep - 1)"
+      v-on:nextStep="changeStep(currentStep + 1)"
       :icon="currentPage.icon || ''"
       :title="currentPage.title || ''"
       :description="currentPage.description || ''"
@@ -31,23 +38,25 @@
 
     <!-- Formulário final [mensagem de envio/resultado] ( passo 7+ ) -->
     <FormCard
-      v-on:previousStep="previousStep"
-      v-on:nextStep="nextStep"
+      v-on:previousStep="changeStep(currentStep - 1)"
+      v-on:nextStep="changeStep(currentStep + 1)"
       v-else
     >
-      <template v-slot:header>
-      </template>
       <template v-slot:body>
         <div class="container text-center mb-5">
-          <h2 class="display-3 text-primary mb-5" data-aos="fade-up">Teste de Hábitos</h2>
+          <h2 class="display-3 text-primary mb-5" data-aos="fade-up">{{title}}</h2>
           <!-- Done check -->
           <i v-if="done" class="fas fa-check display-3 text-primary mb-5" data-aos="zoom-in" data-aos-delay="100"></i>
           <!-- Subtitle -->
           <h5 class="" data-aos="fade-up" data-aos-delay="100" v-html="headerSubtitle"></h5>
+          <!-- Result ( dev only ) -->
+          <pre class="text-left p-3 bg-secondary rounded">
+{{result}}
+          </pre>
         </div>
       </template>
       <template v-slot:footer>
-        <a href="https://www.saberemagrecer.com.br/" class="btn btn-primary h4 d-flex justify-content-center align-items-center w-100" data-aos="zoom-in" data-aos-delay="150">
+        <a href="https://www.saberemagrecer.com.br/" class="btn btn-primary h4 d-flex justify-content-center align-items-center w-100">
           Conheça o programa Saber Emagrecer
           <i class="fa fa-chevron-right ml-3"></i>
         </a>
@@ -72,11 +81,13 @@ export default {
   name: 'App',
   data: () => (
     {
+      title:              'Teste de Hábitos',
       pages:              pages,
       loading:            false,
       sending:            false,
       done:               false,
       currentStep:        -1,
+      showWarning:        false,
     }
   ),
   components: {
@@ -104,19 +115,10 @@ export default {
       this.$refs.formCard.$el.classList.remove('aos-init');
       this.$refs.formCard.$el.classList.remove('aos-animate');
       setTimeout(() => {
-        this.currentStep += value;
+        this.currentStep = value;
         this.$refs.formCard.$el.classList.add('aos-init');
         this.$refs.formCard.$el.classList.add('aos-animate');
       }, 500);
-    },
-    nextStep() {
-      this.changeStep(1);
-    },
-    previousStep() {
-      this.changeStep(-1);
-    },
-    consoleResult() {
-      console.log(this.result);
     }
   },
   mounted() {
@@ -128,6 +130,7 @@ export default {
   watch: {
     currentStep(newValue) {
       this.focusNextInput();
+      this.showWarning = (this.showWarning || newValue == 0) && newValue > -1;
       if(newValue == 7){
         this.sending = true;
         this.loading = true;
@@ -135,17 +138,9 @@ export default {
           this.sending = false;
           this.loading = false;
           this.done = true;
-          this.consoleResult();
+          console.log(this.result);
         }, 5000);
       }
-    },
-    weight(newValue) {
-      console.log(newValue);
-      this.weight = parseFloat(newValue).toFixed(2);
-    },
-    height(newValue) {
-      console.log(newValue);
-      this.height = parseFloat(newValue).toFixed(2);
     }
   },
   computed: {
